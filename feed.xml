@@ -4,11 +4,11 @@
   <generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator>
   <link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://localhost:4000/" rel="alternate" type="text/html" />
-  <updated>2018-01-02T21:38:30+08:00</updated>
+  <updated>2018-01-03T14:33:44+08:00</updated>
   <id>http://localhost:4000/</id>
 
   
-    <title type="html">Freelancer</title>
+    <title type="html">Minerva</title>
   
 
   
@@ -55,11 +55,11 @@
   
     <entry>
       <title type="html">Project 2</title>
-      <link href="http://localhost:4000/web%20development/2014/07/17/project-2/" rel="alternate" type="text/html" title="Project 2" />
-      <published>2014-07-17T00:00:00+08:00</published>
-      <updated>2014-07-17T00:00:00+08:00</updated>
-      <id>http://localhost:4000/web%20development/2014/07/17/project-2</id>
-      <content type="html" xml:base="http://localhost:4000/web%20development/2014/07/17/project-2/"></content>
+      <link href="http://localhost:4000/web%20development/2014/07/18/project-2/" rel="alternate" type="text/html" title="Project 2" />
+      <published>2014-07-18T00:00:00+08:00</published>
+      <updated>2014-07-18T00:00:00+08:00</updated>
+      <id>http://localhost:4000/web%20development/2014/07/18/project-2</id>
+      <content type="html" xml:base="http://localhost:4000/web%20development/2014/07/18/project-2/"></content>
 
       
       
