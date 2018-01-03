@@ -1,3 +1,3 @@
 all:
-	-cp -r _site/* ./
-	-rm -rf _site
+	cp -r _site/* ./
+	rm -rf _site/*
