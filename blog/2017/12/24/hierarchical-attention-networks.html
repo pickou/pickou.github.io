@@ -10,7 +10,7 @@
     <!-- Open Graph -->
     <meta property="og:title" content="Attention based text translation and document classification - Minerva">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="http://localhost:4000/blog/2017/12/24/hierarchical-attention-networks.html">
+    <meta property="og:url" content="http://pickou.cn/blog/2017/12/24/hierarchical-attention-networks.html">
     <meta property="og:description" content="Minerva is the goddess of wisdom in ancient Rome. Here for inpiration and idea spreading.">
     <meta property="og:site_name" content="Minerva">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -28,7 +28,7 @@
 
 <header class="g-header">
     <div class="g-logo">
-      <a href="/"></a>
+      <a href="/http://pickou.cn/"></a>
     </div>
     <i id="menu-toggle" class="iconfont icon-menu"></i>
     <nav class="g-nav">
@@ -48,17 +48,17 @@
         <div class="post-tags">
             
             
-            <a href="http://localhost:4000/tags#attention" class="post-tag">attention</a>
+            <a href="http://pickou.cn/http://pickou.cn/tags#attention" class="post-tag">attention</a>
             
-            <a href="http://localhost:4000/tags#document%20classification" class="post-tag">document classification</a>
+            <a href="http://pickou.cn/http://pickou.cn/tags#document%20classification" class="post-tag">document classification</a>
             
-            <a href="http://localhost:4000/tags#DL" class="post-tag">DL</a>
+            <a href="http://pickou.cn/http://pickou.cn/tags#DL" class="post-tag">DL</a>
             
             
         </div>
         <h1>Attention based text translation and document classification</h1>
         <div class="post-meta">
-            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="http://localhost:4000" target="_blank" rel="author">jcyan</a></></span>
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="http://pickou.cn" target="_blank" rel="author">jcyan</a></></span>
             <time class="post-meta-item" datetime="17-12-24"><i class="iconfont icon-date"></i>24 Dec 2017</time>
         </div>
     </div>
@@ -85,7 +85,7 @@
    
     <article class="markdown-body">
         <p>下图是attention机制在机器翻译上的表现，可以看到attention很好的解决了长句子级的机器翻译问题。
-<img src="http://localhost:4000/pics/attention/attention_model.png" alt="" /></p>
+<img src="http://pickou.cn/pics/attention/attention_model.png" alt="" /></p>
 
 <p>下面我们从文本翻译来讲解attention机制，传统的文本翻译一般是<strong>encoder-decoder</strong>的结构，如下图。现在将英文句子X翻译成中文句子Y，两个句子各自由不同的单词序列组成，表示如下,</p>
 
@@ -93,7 +93,7 @@
 X=<x_1, x_2 ... x_m> \\
 Y=<y_1,y_2 ...y_n> %]]></script>
 
-<p><img src="http://localhost:4000/pics/attention/old_encoder-decoder.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/attention/old_encoder-decoder.png" alt="" /></p>
 
 <p>其中，encoder负责对输入的句子进行编码，将句子通过非线性变换转化为中间语义表示<script type="math/tex">C</script>,表示为<script type="math/tex">C=E(x_1,x_2...x_m)</script>。decoder根据X的中间语义<script type="math/tex">C</script>和之间的历史信息<script type="math/tex">y_1, y_2...y_{i-1}</script>
 来生成i时刻的单词<script type="math/tex">y_i</script>,表示为<script type="math/tex">y_i = D(y_1,y_2...y_{i-1})</script>。</p>
@@ -115,7 +115,7 @@ y_3 = D(C,y_1,y_2)</script>
 y_2 = D(C_2,y_1) \\
 y_3 = D(C_3,y_1,y_2)</script>
 
-<p><img src="http://localhost:4000/pics/attention/am-encoder-decoder.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/attention/am-encoder-decoder.png" alt="" /></p>
 
 <p>对于上面那个例子，其对应的翻译过程可能如下,其中<script type="math/tex">F</script>函数是encoder对英文单词的变换函数，如果是RNN模型，那么<script type="math/tex">F</script>对应的结果是某个时刻隐层节点的状态值，
 <script type="math/tex">G</script>函数代表encoder根据单词的中间表示合成整个句子中间语义表示的变换函数，一般是对构成元素加权求和。</p>
@@ -127,11 +127,11 @@ c_{罗斯} =G(0.2*F('Jack'),0.3*F('love),0.5*F('Rose'))</script>
 <p>以RNN作为encoder和decoder,那么传统的文本翻译的过程就如下图，经过一个RNN的encoder将一句话的语义全部放在了一个矩阵C中,然后再通过decoder翻译出来,这样看来就更能看出整个模型的缺点了,
 这在长句子翻译上的表现差就很容易解释了，因为长句子蕴含的信息量更大，但仍旧只是把句子的语义映射到一个固定大小的矩阵中去，这没办法完整地表示整个句子的语义</p>
 
-<p><img src="http://localhost:4000/pics/attention/RNN-encoder-decoder.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/attention/RNN-encoder-decoder.png" alt="" /></p>
 
 <p>attention的结构，就是将之前的隐层单元输出都收集起来，对这些输出做了个加权求和，这个权值体现了源句子中每个词对于当前需要翻译的词的贡献，结构如下图，</p>
 
-<p><img src="http://localhost:4000/pics/attention/am-rnn-encoder-decoder.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/attention/am-rnn-encoder-decoder.png" alt="" /></p>
 
 <p>总结下，attention机制，就像人在足球比赛，每个时刻，注意力都可能放到不同的人身上，C罗带球了，你可能关注点放到了C罗身上，梅西射门了,那么你肯定更关注这个球进没进，梅西脚下动作是什么，
 相比之下，其他后卫的跑位，掩护可能都没有这些东西更吸引你关注。这个关注就是attention机制，相当于你大脑给这个事件更大的权重。又比如，你读一本小说，需要读懂当前情节，就需要之前的
@@ -142,7 +142,7 @@ c_{罗斯} =G(0.2*F('Jack'),0.3*F('love),0.5*F('Rose'))</script>
 给出了单词和句子对于整个信息的不同贡献程度。
 一个文档有<script type="math/tex">L</script>个句子<script type="math/tex">s_i</script>，每个句子有<script type="math/tex">T_i</script>个词，<script type="math/tex">w_{it}</script>表示第i句话中的第t个词</p>
 
-<p><img src="http://localhost:4000/pics/attention/HAN.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/attention/HAN.png" alt="" /></p>
 
 <ul>
   <li>word encoder</li>
@@ -151,7 +151,7 @@ c_{罗斯} =G(0.2*F('Jack'),0.3*F('love),0.5*F('Rose'))</script>
 <p>一开始，需要通过embedding矩阵<script type="math/tex">W_e</script>转化为对应的embedding,然后通过双向的GRU，获得前向的hidden state，和反向的hidden state,组合成为一个新的<script type="math/tex">h_{it}</script>,
 这样都把这个词的语义用周围的词表示出来了。</p>
 
-<p><img src="http://localhost:4000/pics/attention/word-encoder.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/attention/word-encoder.png" alt="" /></p>
 
 <ul>
   <li>word attention</li>
@@ -161,7 +161,7 @@ c_{罗斯} =G(0.2*F('Jack'),0.3*F('love),0.5*F('Rose'))</script>
 然后通过计算<script type="math/tex">u_{it}</script>和<script type="math/tex">u_w</script>之间的相似度来衡量这个词对于句子语义的重要程度。<script type="math/tex">u_w</script>随机初始化的，通过训练学习得到。通过
 softmax,最后对所有单词加权和得到句子的表示<script type="math/tex">s_i</script>。</p>
 
-<p><img src="http://localhost:4000/pics/attention/word_attention.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/attention/word_attention.png" alt="" /></p>
 
 <ul>
   <li>sentence encoder</li>
@@ -170,13 +170,13 @@ softmax,最后对所有单词加权和得到句子的表示<script type="math/te
 <p>不是所有的句子都是一个文档的重点，所以，在句子级也引入了attention机制。同理，对于每个句子<script type="math/tex">s_i</script>,前向和后向的hidden units组合成一个新的<script type="math/tex">h_{it}</script>,
 然后通过同样的方式引入attention,最后加权求和得到整个文档的语义表示<script type="math/tex">v</script>。</p>
 
-<p><img src="http://localhost:4000/pics/attention/sentence-encoder.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/attention/sentence-encoder.png" alt="" /></p>
 
 <ul>
   <li>sentence attention</li>
 </ul>
 
-<p><img src="http://localhost:4000/pics/attention/sentence-attention.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/attention/sentence-attention.png" alt="" /></p>
 
 <h3 id="reference">Reference</h3>
 
@@ -199,7 +199,7 @@ softmax,最后对所有单词加权和得到句子的表示<script type="math/te
 <section class="author-detail">
     <section class="post-footer-item author-card">
         <div class="avatar">
-            <img src="http://localhost:4000/assets/img/profile.png" alt="">
+            <img src="http://pickou.cn/http://pickou.cn/assets/img/profile.png" alt="">
         </div>
         <div class="author-name" rel="author">jcyan</div>
         <div class="bio">
@@ -291,7 +291,7 @@ s.setAttribute('data-timestamp', +new Date());
 <script src="/assets/js/prism.js"></script>
 <script src="/assets/js/index.min.js"></script>
 
-<!--script src="http://localhost:4000/assets/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured" type="text/javascript"></script> -->
+<!--script src="http://pickou.cn/assets/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured" type="text/javascript"></script> -->
 
 </body>
 </html>

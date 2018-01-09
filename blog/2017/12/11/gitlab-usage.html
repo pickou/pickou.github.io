@@ -10,7 +10,7 @@
     <!-- Open Graph -->
     <meta property="og:title" content="gitlab workflow - Minerva">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="http://localhost:4000/blog/2017/12/11/gitlab-usage.html">
+    <meta property="og:url" content="http://pickou.cn/blog/2017/12/11/gitlab-usage.html">
     <meta property="og:description" content="Minerva is the goddess of wisdom in ancient Rome. Here for inpiration and idea spreading.">
     <meta property="og:site_name" content="Minerva">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -28,7 +28,7 @@
 
 <header class="g-header">
     <div class="g-logo">
-      <a href="/"></a>
+      <a href="/http://pickou.cn/"></a>
     </div>
     <i id="menu-toggle" class="iconfont icon-menu"></i>
     <nav class="g-nav">
@@ -48,15 +48,15 @@
         <div class="post-tags">
             
             
-            <a href="http://localhost:4000/tags#gitlab" class="post-tag">gitlab</a>
+            <a href="http://pickou.cn/http://pickou.cn/tags#gitlab" class="post-tag">gitlab</a>
             
-            <a href="http://localhost:4000/tags#tools" class="post-tag">tools</a>
+            <a href="http://pickou.cn/http://pickou.cn/tags#tools" class="post-tag">tools</a>
             
             
         </div>
         <h1>gitlab workflow</h1>
         <div class="post-meta">
-            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="http://localhost:4000" target="_blank" rel="author">jcyan</a></></span>
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="http://pickou.cn" target="_blank" rel="author">jcyan</a></></span>
             <time class="post-meta-item" datetime="17-12-11"><i class="iconfont icon-date"></i>11 Dec 2017</time>
         </div>
     </div>
@@ -84,12 +84,12 @@
     <article class="markdown-body">
         <p>gitlab作为一个协同工作的代码管理工具，使用起来很方便，能大大提高生产效率。</p>
 <figure>
-<a><img src="http://localhost:4000/pics/gitlab.png" /></a>
+<a><img src="http://pickou.cn/pics/gitlab.png" /></a>
 </figure>
 <p>git的工作流主要维护本地仓库的三棵树，分别是<strong>工作目录</strong>，包含了实际的文件；<strong>暂存区(Index)</strong>，
 相当于一个缓冲区，保存临时改动；<strong>HEAD</strong>,指向最后一次提交的结果。</p>
 <figure>
-<a><img src="http://localhost:4000/pics/gitworkflow.png" /></a>
+<a><img src="http://pickou.cn/pics/gitworkflow.png" /></a>
 </figure>
 
 <h2 id="1-easy-workflow">1. easy workflow</h2>
@@ -107,7 +107,7 @@
 另外一个工作区。使用命令<code class="highlighter-rouge">git checkout master</code>就切换回master了。<code class="highlighter-rouge">git push origin feature_x</code>本地新建
 的分支就被推送到远程，远程多了一个分支<code class="highlighter-rouge">feature_x</code>。要删除分支，使用命令<code class="highlighter-rouge">git branch -d feature_x</code></p>
 <figure>
-<a><img src="http://localhost:4000/pics/branch.png" /></a>
+<a><img src="http://pickou.cn/pics/branch.png" /></a>
 </figure>
 
 <h2 id="3-merge">3. merge</h2>
@@ -118,7 +118,7 @@
 <p>当你在merge或者是pull的时候可能会出现conflicts，那么你需要先修改好这些冲突，
 然后使用<code class="highlighter-rouge">git add</code>添加修改好的文件，再进行后续的步骤。</p>
 <figure>
-<a><img src="http://localhost:4000/pics/merge.png" /></a>
+<a><img src="http://pickou.cn/pics/merge.png" /></a>
 </figure>
 
 <h2 id="4-git-rebase">4. git rebase</h2>
@@ -128,20 +128,20 @@
   <li>现在有一个远程分支origin,已经有了两个commits，然后基于origin分支新建一个mywork分支</li>
 </ul>
 <figure>
-<a><img src="http://localhost:4000/pics/w1.png" /></a>
+<a><img src="http://pickou.cn/pics/w1.png" /></a>
 </figure>
 <ul>
   <li>你在mywork分支上有了两个commits,你的同事在origin上也提交了两个commits，两个分支各自都前进了,
 那么就产生了分叉</li>
 </ul>
 <figure>
-<a><img src="http://localhost:4000/pics/w2.png" /></a>
+<a><img src="http://pickou.cn/pics/w2.png" /></a>
 </figure>
 <ul>
   <li>你在提交MR之前会先会使用<code class="highlighter-rouge">git pull</code>更新本地分支，那么两个分支就会产生merge，看起来就是这样的</li>
 </ul>
 <figure>
-<a><img src="http://localhost:4000/pics/w3.png" /></a>
+<a><img src="http://pickou.cn/pics/w3.png" /></a>
 </figure>
 <ul>
   <li>如果你想要mywork分支像没有经过合并一样，需要使用<code class="highlighter-rouge">git rebase</code>,这样会把mywork分支中的commits临时
@@ -149,13 +149,13 @@
 这样，看起来就跟没有合并一样，结构更为清爽，便于repository的管理。</li>
 </ul>
 <figure>
-<a><img src="http://localhost:4000/pics/w4.png" /></a>
+<a><img src="http://pickou.cn/pics/w4.png" /></a>
 </figure>
 <ul>
   <li>当mywork分支更新之后，之前的commits就会被丢掉，垃圾回收机制就会把这些没有用的commits给删除掉</li>
 </ul>
 <figure>
-<a><img src="http://localhost:4000/pics/w5.png" /></a>
+<a><img src="http://pickou.cn/pics/w5.png" /></a>
 </figure>
 <p>如果<code class="highlighter-rouge">git rebase</code>的过程中出现了conflicts，那么可以先解决玩冲突，然后使用git add添加修改，接着使用
 <code class="highlighter-rouge">git rebase --continue</code></p>
@@ -165,7 +165,7 @@
 下图这样，在<code class="highlighter-rouge">&lt;&lt;&lt;&lt;&lt;&lt;</code>和<code class="highlighter-rouge">HEAD</code>之间是你当前的修改,后面那部分是别人的修改或者是你之前的修改。如果两个工作都需要，
 那么把所有的非代码部分去掉就可以了，如果只需要其中一个，那就保留其中一个。</p>
 <figure>
-<a><img src="http://localhost:4000/pics/conflicts.png" /></a>
+<a><img src="http://pickou.cn/pics/conflicts.png" /></a>
 </figure>
 
 <h2 id="6-other-commands">6. other commands</h2>
@@ -176,7 +176,7 @@
   <li><code class="highlighter-rouge">git log</code> 查看git的日志，所有提交的commits。可以按照树形显示分支，<code class="highlighter-rouge">git log --graph --oneline --decorate --all</code></li>
 </ol>
 <figure>
-<a><img src="http://localhost:4000/pics/git_log.png" /></a>
+<a><img src="http://pickou.cn/pics/git_log.png" /></a>
 </figure>
 
 <h4 id="reference">Reference</h4>
@@ -199,7 +199,7 @@
 <section class="author-detail">
     <section class="post-footer-item author-card">
         <div class="avatar">
-            <img src="http://localhost:4000/assets/img/profile.png" alt="">
+            <img src="http://pickou.cn/http://pickou.cn/assets/img/profile.png" alt="">
         </div>
         <div class="author-name" rel="author">jcyan</div>
         <div class="bio">
@@ -291,7 +291,7 @@ s.setAttribute('data-timestamp', +new Date());
 <script src="/assets/js/prism.js"></script>
 <script src="/assets/js/index.min.js"></script>
 
-<!--script src="http://localhost:4000/assets/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured" type="text/javascript"></script> -->
+<!--script src="http://pickou.cn/assets/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured" type="text/javascript"></script> -->
 
 </body>
 </html>

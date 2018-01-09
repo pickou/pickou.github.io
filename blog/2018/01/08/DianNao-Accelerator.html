@@ -10,7 +10,7 @@
     <!-- Open Graph -->
     <meta property="og:title" content="DianNao Accelerator paper reading - Minerva">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="http://localhost:4000/blog/2018/01/08/DianNao-Accelerator.html">
+    <meta property="og:url" content="http://pickou.cn/blog/2018/01/08/DianNao-Accelerator.html">
     <meta property="og:description" content="Minerva is the goddess of wisdom in ancient Rome. Here for inpiration and idea spreading.">
     <meta property="og:site_name" content="Minerva">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -28,7 +28,7 @@
 
 <header class="g-header">
     <div class="g-logo">
-      <a href="/"></a>
+      <a href="/http://pickou.cn/"></a>
     </div>
     <i id="menu-toggle" class="iconfont icon-menu"></i>
     <nav class="g-nav">
@@ -48,17 +48,17 @@
         <div class="post-tags">
             
             
-            <a href="http://localhost:4000/tags#convolution" class="post-tag">convolution</a>
+            <a href="http://pickou.cn/http://pickou.cn/tags#convolution" class="post-tag">convolution</a>
             
-            <a href="http://localhost:4000/tags#accelerator" class="post-tag">accelerator</a>
+            <a href="http://pickou.cn/http://pickou.cn/tags#accelerator" class="post-tag">accelerator</a>
             
-            <a href="http://localhost:4000/tags#DL" class="post-tag">DL</a>
+            <a href="http://pickou.cn/http://pickou.cn/tags#DL" class="post-tag">DL</a>
             
             
         </div>
         <h1>DianNao Accelerator paper reading</h1>
         <div class="post-meta">
-            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="http://localhost:4000" target="_blank" rel="author">jcyan</a></></span>
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="http://pickou.cn" target="_blank" rel="author">jcyan</a></></span>
             <time class="post-meta-item" datetime="18-01-08"><i class="iconfont icon-date"></i>08 Jan 2018</time>
         </div>
     </div>
@@ -86,7 +86,7 @@
     <article class="markdown-body">
         <p>文章主要关注点在<strong>feed forward</strong>,而不是back propagation。从deep network中选取了两种比较有代表性的网络结构<strong>CNN</strong> 和<strong>DNN</strong>,接着又从这两个网络里面提取了三个具有代表性的layer,分别是 classsifier, convolutional layer 和 pooling layer。如下图，</p>
 
-<p><img src="http://localhost:4000/pics/diannao/selected-layer.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/diannao/selected-layer.png" alt="" /></p>
 
 <p>为了加速神经网络，就需要解决<strong>memory traffic</strong>问题，接下类分析这三个layer的data locality</p>
 
@@ -96,19 +96,19 @@
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>range<span class="o">(</span>1, 2<span class="o">)</span>
 </code></pre></div></div>
-<p><img src="http://localhost:4000/pics/diannao/classifier_layer.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/diannao/classifier_layer.png" alt="" /></p>
 
 <ul>
   <li>pooling layer</li>
 </ul>
 
-<p><img src="http://localhost:4000/pics/diannao/pooling_layer.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/diannao/pooling_layer.png" alt="" /></p>
 
 <ul>
   <li>convolutional layer</li>
 </ul>
 
-<p><img src="http://localhost:4000/pics/diannao/conv_layer.png" alt="" /></p>
+<p><img src="http://pickou.cn/pics/diannao/conv_layer.png" alt="" /></p>
 
     </article>
     
@@ -121,7 +121,7 @@
 <section class="author-detail">
     <section class="post-footer-item author-card">
         <div class="avatar">
-            <img src="http://localhost:4000/assets/img/profile.png" alt="">
+            <img src="http://pickou.cn/http://pickou.cn/assets/img/profile.png" alt="">
         </div>
         <div class="author-name" rel="author">jcyan</div>
         <div class="bio">
@@ -204,7 +204,7 @@ s.setAttribute('data-timestamp', +new Date());
 <script src="/assets/js/prism.js"></script>
 <script src="/assets/js/index.min.js"></script>
 
-<!--script src="http://localhost:4000/assets/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured" type="text/javascript"></script> -->
+<!--script src="http://pickou.cn/assets/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured" type="text/javascript"></script> -->
 
 </body>
 </html>
