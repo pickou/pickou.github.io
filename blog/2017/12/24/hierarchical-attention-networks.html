@@ -66,7 +66,22 @@
 </header>
 
 <div class="post-content">
-
+    <!-- mathjax -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        jax: ["input/Tex", "output/HTML-CSS"],
+        text2jax: {
+            inlineMath: [['$','$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$']],
+            processEscape: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        },
+        messageStyle: "none",
+        "HTML-CSS": {preferredFont: "Tex", availableFonts: ["STIX", "TEX"]}
+    });
+    </script>   
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>   
    
     <article class="markdown-body">
         <p>下图是attention机制在机器翻译上的表现，可以看到attention很好的解决了长句子级的机器翻译问题。
@@ -80,8 +95,8 @@ Y=<y_1,y_2 ...y_n> %]]></script>
 
 <p><img src="http://localhost:4000/pics/attention/old_encoder-decoder.png" alt="" /></p>
 
-<p>其中，encoder负责对输入的句子进行编码，将句子通过非线性变换转化为中间语义表示$C$,表示为(C=E(x_1,x_2…x_m))。decoder根据X的中间语义(C)和之间的历史信息(y_1, y_2…y_{i-1})
-来生成i时刻的单词(y_i),表示为(y_i = D(y_1,y_2…y_{i-1}))。</p>
+<p>其中，encoder负责对输入的句子进行编码，将句子通过非线性变换转化为中间语义表示<script type="math/tex">C</script>,表示为<script type="math/tex">C=E(x_1,x_2...x_m)</script>。decoder根据X的中间语义<script type="math/tex">C</script>和之间的历史信息<script type="math/tex">y_1, y_2...y_{i-1}</script>
+来生成i时刻的单词<script type="math/tex">y_i</script>,表示为<script type="math/tex">y_i = D(y_1,y_2...y_{i-1})</script>。</p>
 
 <p>那么attention机制是怎么一回事呢。先举个例子，假设X序列为<strong>Jack love Rose</strong>,Y序列为<strong>杰克喜欢罗斯</strong>。我们用分解encoder-decoder的过程，那么翻译的过程就是依次生成<strong>杰克</strong>、<strong>喜欢</strong>、<strong>罗斯</strong>,表示为</p>
 
@@ -89,11 +104,11 @@ Y=<y_1,y_2 ...y_n> %]]></script>
 y_2 = D(C,y_1) \\
 y_3 = D(C,y_1,y_2)</script>
 
-<p>传统的语义表示方法的局限就体现出来了，在生成目标句子的单词的时候，无论是 $y_1$ , $y_2$ 还是 $y_3$ ，都使用的语义编码C,没有变化,换句话来说就是句子X中的任意单词对于生成目标单词$y_i$的
+<p>传统的语义表示方法的局限就体现出来了，在生成目标句子的单词的时候，无论是 <script type="math/tex">y_1</script> , <script type="math/tex">y_2</script> 还是 <script type="math/tex">y_3</script> ，都使用的语义编码C,没有变化,换句话来说就是句子X中的任意单词对于生成目标单词<script type="math/tex">y_i</script>的
 影响都是一样的，这明显是不科学的。attention就是为了解决这个不合理的地方，比如在翻译出<code class="highlighter-rouge">喜欢</code>这个词的时候，<code class="highlighter-rouge">love</code>的贡献率应该更大，而<code class="highlighter-rouge">Jack</code>和<code class="highlighter-rouge">Rose</code>就显得不那么重要了。
-注意力机制要体现英文单词对于翻译当前中文单词的不同影响程度,类似于给出一个概率分布值，比如在翻译出喜欢这个词的时候,表示为$(Jack,0.3)(love,0.5)(Rose,0.2)$。</p>
+注意力机制要体现英文单词对于翻译当前中文单词的不同影响程度,类似于给出一个概率分布值，比如在翻译出喜欢这个词的时候,表示为<script type="math/tex">(Jack,0.3)(love,0.5)(Rose,0.2)</script>。</p>
 
-<p>引入注意力机制之后，目标句子中的每个单词都会学习对应源句子中每个单词的注意力分配概率的信息。这就相当于在生成每个单词$y_i$的时候，都会根据$y_1,y_2…y_{i-1}$来生成新的变化的$c_i$,
+<p>引入注意力机制之后，目标句子中的每个单词都会学习对应源句子中每个单词的注意力分配概率的信息。这就相当于在生成每个单词<script type="math/tex">y_i</script>的时候，都会根据<script type="math/tex">y_1,y_2...y_{i-1}</script>来生成新的变化的<script type="math/tex">c_i</script>,
 模型结构如下图，翻译的过程就变成了下面这个过程</p>
 
 <script type="math/tex; mode=display">y_1 = D(C_1) \\
@@ -102,8 +117,8 @@ y_3 = D(C_3,y_1,y_2)</script>
 
 <p><img src="http://localhost:4000/pics/attention/am-encoder-decoder.png" alt="" /></p>
 
-<p>对于上面那个例子，其对应的翻译过程可能如下,其中$F$函数是encoder对英文单词的变换函数，如果是RNN模型，那么$F$对应的结果是某个时刻隐层节点的状态值，
-$G$函数代表encoder根据单词的中间表示合成整个句子中间语义表示的变换函数，一般是对构成元素加权求和。</p>
+<p>对于上面那个例子，其对应的翻译过程可能如下,其中<script type="math/tex">F</script>函数是encoder对英文单词的变换函数，如果是RNN模型，那么<script type="math/tex">F</script>对应的结果是某个时刻隐层节点的状态值，
+<script type="math/tex">G</script>函数代表encoder根据单词的中间表示合成整个句子中间语义表示的变换函数，一般是对构成元素加权求和。</p>
 
 <script type="math/tex; mode=display">c_{杰克} =G(0.6*F('Jack'),0.2*F('love),0.2*F('Rose')) \\
 c_{喜欢} =G(0.2*F('Jack'),0.7*F('love),0.1*F('Rose')) \\
@@ -122,19 +137,18 @@ c_{罗斯} =G(0.2*F('Jack'),0.3*F('love),0.5*F('Rose'))</script>
 相比之下，其他后卫的跑位，掩护可能都没有这些东西更吸引你关注。这个关注就是attention机制，相当于你大脑给这个事件更大的权重。又比如，你读一本小说，需要读懂当前情节，就需要之前的
 铺垫和背景知识，但是不是所有的背景知识对于理解当前情节都是很重要的，这个重要程度就是attention机制。简而言之，<strong>attention机制</strong>解决了之前的模型<strong>抓不住重点</strong>的问题.</p>
 
-<p>###Attention for document classification
-hierarchical attention network描述了<strong>文档的结构</strong>，文档是由句子构成的，句子是由单词构成的。又加入了<strong>两个层次的attention机制</strong>，一个是句子级的,一个是单词级的，
-给出了单词和句子对于整个信息的不同贡献程度。</p>
+<h3 id="attention-for-document-classification">Attention for document classification</h3>
+<p>hierarchical attention network描述了<strong>文档的结构</strong>，文档是由句子构成的，句子是由单词构成的。又加入了<strong>两个层次的attention机制</strong>，一个是句子级的,一个是单词级的，
+给出了单词和句子对于整个信息的不同贡献程度。
+一个文档有<script type="math/tex">L</script>个句子<script type="math/tex">s_i</script>，每个句子有<script type="math/tex">T_i</script>个词，<script type="math/tex">w_{it}</script>表示第i句话中的第t个词</p>
 
 <p><img src="http://localhost:4000/pics/attention/HAN.png" alt="" /></p>
-
-<p>一个文档有$L$个句子$s_i$，每个句子有$T_i$个词，$w_{it}$表示第i句话中的第t个词</p>
 
 <ul>
   <li>word encoder</li>
 </ul>
 
-<p>一开始，需要通过embedding矩阵$W_e$转化为对应的embedding,然后通过双向的GRU，获得前向的hidden state，和反向的hidden state,组合成为一个新的$h_{it}$,
+<p>一开始，需要通过embedding矩阵<script type="math/tex">W_e</script>转化为对应的embedding,然后通过双向的GRU，获得前向的hidden state，和反向的hidden state,组合成为一个新的<script type="math/tex">h_{it}</script>,
 这样都把这个词的语义用周围的词表示出来了。</p>
 
 <p><img src="http://localhost:4000/pics/attention/word-encoder.png" alt="" /></p>
@@ -143,9 +157,9 @@ hierarchical attention network描述了<strong>文档的结构</strong>，文档
   <li>word attention</li>
 </ul>
 
-<p>不是所有的词都是一句话的重点，所以，引入了attention的机制。先让$<code class="highlighter-rouge">h_it</code>$通过一个单层的MLP,得到$<code class="highlighter-rouge">h_{it}</code>$的隐层表示$<code class="highlighter-rouge">u_{it}</code>$,
-然后通过计算$<code class="highlighter-rouge">u_{it}</code>$和$<code class="highlighter-rouge">u_w</code>$之间的相似度来衡量这个词对于句子语义的重要程度。$<code class="highlighter-rouge">u_w</code>$随机初始化的，通过训练学习得到。通过
-softmax,最后对所有单词加权和得到句子的表示$<code class="highlighter-rouge">s_i</code>$。</p>
+<p>不是所有的词都是一句话的重点，所以，引入了attention的机制。先让<script type="math/tex">h_it</script>通过一个单层的MLP,得到<script type="math/tex">h_{it}</script>的隐层表示<script type="math/tex">u_{it}</script>,
+然后通过计算<script type="math/tex">u_{it}</script>和<script type="math/tex">u_w</script>之间的相似度来衡量这个词对于句子语义的重要程度。<script type="math/tex">u_w</script>随机初始化的，通过训练学习得到。通过
+softmax,最后对所有单词加权和得到句子的表示<script type="math/tex">s_i</script>。</p>
 
 <p><img src="http://localhost:4000/pics/attention/word_attention.png" alt="" /></p>
 
@@ -153,8 +167,8 @@ softmax,最后对所有单词加权和得到句子的表示$<code class="highlig
   <li>sentence encoder</li>
 </ul>
 
-<p>不是所有的句子都是一个文档的重点，所以，在句子级也引入了attention机制。同理，对于每个句子$<code class="highlighter-rouge">s_i</code>$,前向和后向的hidden units组合成一个新的$<code class="highlighter-rouge">h_{it}</code>$,
-然后通过同样的方式引入attention,最后加权求和得到整个文档的语义表示$<code class="highlighter-rouge">v</code>$。</p>
+<p>不是所有的句子都是一个文档的重点，所以，在句子级也引入了attention机制。同理，对于每个句子<script type="math/tex">s_i</script>,前向和后向的hidden units组合成一个新的<script type="math/tex">h_{it}</script>,
+然后通过同样的方式引入attention,最后加权求和得到整个文档的语义表示<script type="math/tex">v</script>。</p>
 
 <p><img src="http://localhost:4000/pics/attention/sentence-encoder.png" alt="" /></p>
 
@@ -217,6 +231,15 @@ softmax,最后对所有单词加权和得到句子的表示$<code class="highlig
     </section>
     <section class="post-footer-item read-next">
         
+        <div class="read-next-item">
+            <a href="/blog/2018/01/08/DianNao-Accelerator.html" class="read-next-link"></a>
+            <section>
+                <span>DianNao Accelerator paper reading</span>
+                <p>文章主要关注点在feed forward,而不是back propagation。从deep network中选取...</p>
+            </section>
+            
+        </div>
+        
         
         <div class="read-next-item">
             <a href="/blog/2017/12/11/gitlab-usage.html" class="read-next-link"></a>
@@ -267,17 +290,7 @@ s.setAttribute('data-timestamp', +new Date());
 <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
 <script src="/assets/js/prism.js"></script>
 <script src="/assets/js/index.min.js"></script>
-<!-- mathjax -->
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        text2jax: {
-        inlineMath: [['$','$'], ['\\(', '\\)']],
-        processEscape: true
-        }
-    });
-</script>   
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 <!--script src="http://localhost:4000/assets/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured" type="text/javascript"></script> -->
 
 </body>

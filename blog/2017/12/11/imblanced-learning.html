@@ -62,7 +62,22 @@
 </header>
 
 <div class="post-content">
-
+    <!-- mathjax -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        jax: ["input/Tex", "output/HTML-CSS"],
+        text2jax: {
+            inlineMath: [['$','$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$']],
+            processEscape: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        },
+        messageStyle: "none",
+        "HTML-CSS": {preferredFont: "Tex", availableFonts: ["STIX", "TEX"]}
+    });
+    </script>   
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>   
    
     <article class="markdown-body">
         <p>先占个位置，后续添加</p>
@@ -172,17 +187,7 @@ s.setAttribute('data-timestamp', +new Date());
 <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
 <script src="/assets/js/prism.js"></script>
 <script src="/assets/js/index.min.js"></script>
-<!-- mathjax -->
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        text2jax: {
-        inlineMath: [['$','$'], ['\\(', '\\)']],
-        processEscape: true
-        }
-    });
-</script>   
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 <!--script src="http://localhost:4000/assets/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured" type="text/javascript"></script> -->
 
 </body>

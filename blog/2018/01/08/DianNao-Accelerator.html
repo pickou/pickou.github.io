@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>imbalanced machine learning - Minerva</title>
+    <title>DianNao Accelerator paper reading - Minerva</title>
     <meta name="author"  content="jcyan">
-    <meta name="description" content="imbalanced machine learning">
-    <meta name="keywords"  content="imbalance data">
+    <meta name="description" content="DianNao Accelerator paper reading">
+    <meta name="keywords"  content="convolution, accelerator, DL">
     <!-- Open Graph -->
-    <meta property="og:title" content="imbalanced machine learning - Minerva">
+    <meta property="og:title" content="DianNao Accelerator paper reading - Minerva">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="http://localhost:4000/blog/2017/12/11/imblanced-learning.html">
+    <meta property="og:url" content="http://localhost:4000/blog/2018/01/08/DianNao-Accelerator.html">
     <meta property="og:description" content="Minerva is the goddess of wisdom in ancient Rome. Here for inpiration and idea spreading.">
     <meta property="og:site_name" content="Minerva">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -48,24 +48,67 @@
         <div class="post-tags">
             
             
-            <a href="http://localhost:4000/tags#imbalance%20data" class="post-tag">imbalance data</a>
+            <a href="http://localhost:4000/tags#convolution" class="post-tag">convolution</a>
+            
+            <a href="http://localhost:4000/tags#accelerator" class="post-tag">accelerator</a>
+            
+            <a href="http://localhost:4000/tags#DL" class="post-tag">DL</a>
             
             
         </div>
-        <h1>imbalanced machine learning</h1>
+        <h1>DianNao Accelerator paper reading</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="http://localhost:4000" target="_blank" rel="author">jcyan</a></></span>
-            <time class="post-meta-item" datetime="17-12-11"><i class="iconfont icon-date"></i>11 Dec 2017</time>
+            <time class="post-meta-item" datetime="18-01-08"><i class="iconfont icon-date"></i>08 Jan 2018</time>
         </div>
     </div>
     
 </header>
 
 <div class="post-content">
-
+    <!-- mathjax -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        jax: ["input/Tex", "output/HTML-CSS"],
+        text2jax: {
+            inlineMath: [['$','$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$']],
+            processEscape: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        },
+        messageStyle: "none",
+        "HTML-CSS": {preferredFont: "Tex", availableFonts: ["STIX", "TEX"]}
+    });
+    </script>   
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>   
    
     <article class="markdown-body">
-        <p>先占个位置，后续添加</p>
+        <p>文章主要关注点在<strong>feed forward</strong>,而不是back propagation。从deep network中选取了两种比较有代表性的网络结构<strong>CNN</strong> 和<strong>DNN</strong>,接着又从这两个网络里面提取了三个具有代表性的layer,分别是 classsifier, convolutional layer 和 pooling layer。如下图，</p>
+
+<p><img src="http://localhost:4000/pics/diannao/selected-layer.png" alt="" /></p>
+
+<p>为了加速神经网络，就需要解决<strong>memory traffic</strong>问题，接下类分析这三个layer的data locality</p>
+
+<ul>
+  <li>classifier layer</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>range<span class="o">(</span>1, 2<span class="o">)</span>
+</code></pre></div></div>
+<p><img src="http://localhost:4000/pics/diannao/classifier_layer.png" alt="" /></p>
+
+<ul>
+  <li>pooling layer</li>
+</ul>
+
+<p><img src="http://localhost:4000/pics/diannao/pooling_layer.png" alt="" /></p>
+
+<ul>
+  <li>convolutional layer</li>
+</ul>
+
+<p><img src="http://localhost:4000/pics/diannao/conv_layer.png" alt="" /></p>
 
     </article>
     
@@ -110,25 +153,13 @@
     </section>
     <section class="post-footer-item read-next">
         
-        <div class="read-next-item">
-            <a href="/2017/12/11/recommender.html" class="read-next-link"></a>
-            <section>
-                <span>recommender system</span>
-                <p>recommender system knwoledge</p>
-            </section>
-            
-        </div>
-        
         
         <div class="read-next-item">
-            <a href="/2017/04/18/hello-jekyll.html" class="read-next-link"></a>
+            <a href="/blog/2017/12/24/hierarchical-attention-networks.html" class="read-next-link"></a>
             <section>
-                <span>Hello Jekyll</span>
-                <p>  Transform your plain text into static websites and blogs.</p>
+                <span>Attention based text translation and document classification</span>
+                <p>下图是attention机制在机器翻译上的表现，可以看到attention很好的解决了长句子级的机器翻译问题。</p>
             </section>
-            
-            <div class="filter"></div>
-            <img src="http://on2171g4d.bkt.clouddn.com/jekyll-banner.png" alt="">
             
         </div>
         
@@ -172,17 +203,7 @@ s.setAttribute('data-timestamp', +new Date());
 <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
 <script src="/assets/js/prism.js"></script>
 <script src="/assets/js/index.min.js"></script>
-<!-- mathjax -->
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        text2jax: {
-        inlineMath: [['$','$'], ['\\(', '\\)']],
-        processEscape: true
-        }
-    });
-</script>   
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 <!--script src="http://localhost:4000/assets/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured" type="text/javascript"></script> -->
 
 </body>

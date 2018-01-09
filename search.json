@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "DianNao Accelerator paper reading",
+      "tags"     : "convolution accelerator DL",
+      "url"      : "/blog/2018/01/08/DianNao-Accelerator.html"
+    } ,
+  
+    {
       "title"    : "Attention based text translation and document classification",
       "tags"     : "attention document classification DL",
       "url"      : "/blog/2017/12/24/hierarchical-attention-networks.html"
