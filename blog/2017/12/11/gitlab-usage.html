@@ -95,34 +95,34 @@
 <h2 id="1-easy-workflow">1. easy workflow</h2>
 <p>take demo.cpp for example</p>
 <ul>
-  <li><code class="highlighter-rouge">git add demo.cpp</code> demo.cpp被添加到暂存区</li>
-  <li><code class="highlighter-rouge">git commit -m "demo cpp"</code> 提交改动到<strong>HEAD</strong>,但还没有提交到远程分支</li>
-  <li><code class="highlighter-rouge">git pull origin branch-name</code> 从远程分支上pull到本地，更新本地分支</li>
-  <li><code class="highlighter-rouge">git push origin branch-name</code> 提交改动到远程分支branch-name上</li>
+  <li><code>git add demo.cpp</code> demo.cpp被添加到暂存区</li>
+  <li><code>git commit -m "demo cpp"</code> 提交改动到<strong>HEAD</strong>,但还没有提交到远程分支</li>
+  <li><code>git pull origin branch-name</code> 从远程分支上pull到本地，更新本地分支</li>
+  <li><code>git push origin branch-name</code> 提交改动到远程分支branch-name上</li>
 </ul>
 
 <h2 id="2-branch">2. branch</h2>
-<p>一般在创建一个repository之后，会有一个默认的分支master。现在，在本地建立一个新的分支<code class="highlighter-rouge">feature_x</code>,
-使用命令<code class="highlighter-rouge">git checkout -b feature_x</code>，就在本地新建了一个分支，并同时切换到该分支上，这个分支相当于
-另外一个工作区。使用命令<code class="highlighter-rouge">git checkout master</code>就切换回master了。<code class="highlighter-rouge">git push origin feature_x</code>本地新建
-的分支就被推送到远程，远程多了一个分支<code class="highlighter-rouge">feature_x</code>。要删除分支，使用命令<code class="highlighter-rouge">git branch -d feature_x</code></p>
+<p>一般在创建一个repository之后，会有一个默认的分支master。现在，在本地建立一个新的分支<code>feature_x</code>,
+使用命令<code>git checkout -b feature_x</code>，就在本地新建了一个分支，并同时切换到该分支上，这个分支相当于
+另外一个工作区。使用命令<code>git checkout master</code>就切换回master了。<code>git push origin feature_x</code>本地新建
+的分支就被推送到远程，远程多了一个分支<code>feature_x</code>。要删除分支，使用命令<code>git branch -d feature_x</code></p>
 <figure>
 <a><img src="http://pickou.cn/pics/branch.png" /></a>
 </figure>
 
 <h2 id="3-merge">3. merge</h2>
 <p>在工业生产中，每个人会在一个对应的分支上开发自己的feature,完成开发之后提交<strong>MR</strong>,然后通过review,和CI,
-最终merge到master上。这样保证了项目的质量，同时提高工作效率。<code class="highlighter-rouge">git merge feature_x</code>，提交了
-<code class="highlighter-rouge">feature_x</code>和master的MR。</p>
+最终merge到master上。这样保证了项目的质量，同时提高工作效率。<code>git merge feature_x</code>，提交了
+<code>feature_x</code>和master的MR。</p>
 
 <p>当你在merge或者是pull的时候可能会出现conflicts，那么你需要先修改好这些冲突，
-然后使用<code class="highlighter-rouge">git add</code>添加修改好的文件，再进行后续的步骤。</p>
+然后使用<code>git add</code>添加修改好的文件，再进行后续的步骤。</p>
 <figure>
 <a><img src="http://pickou.cn/pics/merge.png" /></a>
 </figure>
 
 <h2 id="4-git-rebase">4. git rebase</h2>
-<p><code class="highlighter-rouge">git rebase</code>主要作用是将一个分支的修改合并到当前的分支，下面以一个例子来讲解</p>
+<p><code>git rebase</code>主要作用是将一个分支的修改合并到当前的分支，下面以一个例子来讲解</p>
 
 <ul>
   <li>现在有一个远程分支origin,已经有了两个commits，然后基于origin分支新建一个mywork分支</li>
@@ -138,14 +138,14 @@
 <a><img src="http://pickou.cn/pics/w2.png" /></a>
 </figure>
 <ul>
-  <li>你在提交MR之前会先会使用<code class="highlighter-rouge">git pull</code>更新本地分支，那么两个分支就会产生merge，看起来就是这样的</li>
+  <li>你在提交MR之前会先会使用<code>git pull</code>更新本地分支，那么两个分支就会产生merge，看起来就是这样的</li>
 </ul>
 <figure>
 <a><img src="http://pickou.cn/pics/w3.png" /></a>
 </figure>
 <ul>
-  <li>如果你想要mywork分支像没有经过合并一样，需要使用<code class="highlighter-rouge">git rebase</code>,这样会把mywork分支中的commits临时
-保存在<code class="highlighter-rouge">.git/rebase</code>中，然后更新mywork为最新的origin分支，接着再把这些临时保存的修改应用到mywork上,
+  <li>如果你想要mywork分支像没有经过合并一样，需要使用<code>git rebase</code>,这样会把mywork分支中的commits临时
+保存在<code>.git/rebase</code>中，然后更新mywork为最新的origin分支，接着再把这些临时保存的修改应用到mywork上,
 这样，看起来就跟没有合并一样，结构更为清爽，便于repository的管理。</li>
 </ul>
 <figure>
@@ -157,12 +157,12 @@
 <figure>
 <a><img src="http://pickou.cn/pics/w5.png" /></a>
 </figure>
-<p>如果<code class="highlighter-rouge">git rebase</code>的过程中出现了conflicts，那么可以先解决玩冲突，然后使用git add添加修改，接着使用
-<code class="highlighter-rouge">git rebase --continue</code></p>
+<p>如果<code>git rebase</code>的过程中出现了conflicts，那么可以先解决玩冲突，然后使用git add添加修改，接着使用
+<code>git rebase --continue</code></p>
 
 <h2 id="5-conflicts">5. conflicts</h2>
 <p>多人协作的时候,很容易产生conflicts,这时候需要我们先在本地解决好冲突，然后再进行后面的步骤。冲突表现为
-下图这样，在<code class="highlighter-rouge">&lt;&lt;&lt;&lt;&lt;&lt;</code>和<code class="highlighter-rouge">HEAD</code>之间是你当前的修改,后面那部分是别人的修改或者是你之前的修改。如果两个工作都需要，
+下图这样，在<code>&lt;&lt;&lt;&lt;&lt;&lt;</code>和<code>HEAD</code>之间是你当前的修改,后面那部分是别人的修改或者是你之前的修改。如果两个工作都需要，
 那么把所有的非代码部分去掉就可以了，如果只需要其中一个，那就保留其中一个。</p>
 <figure>
 <a><img src="http://pickou.cn/pics/conflicts.png" /></a>
@@ -170,10 +170,10 @@
 
 <h2 id="6-other-commands">6. other commands</h2>
 <ol>
-  <li><code class="highlighter-rouge">git stash</code> 用作你有一些修改，但是又不想提交这些修改，同时你又要回到一个干净的工作环境。这个命令
+  <li><code>git stash</code> 用作你有一些修改，但是又不想提交这些修改，同时你又要回到一个干净的工作环境。这个命令
 就会把你在工作环境中和Index下的修改放到一个缓冲区去，然后把工作环境revert到最近的一个commits(HEAD)。</li>
-  <li><code class="highlighter-rouge">git stash pop</code> 弹出之前保存的修改</li>
-  <li><code class="highlighter-rouge">git log</code> 查看git的日志，所有提交的commits。可以按照树形显示分支，<code class="highlighter-rouge">git log --graph --oneline --decorate --all</code></li>
+  <li><code>git stash pop</code> 弹出之前保存的修改</li>
+  <li><code>git log</code> 查看git的日志，所有提交的commits。可以按照树形显示分支，<code>git log --graph --oneline --decorate --all</code></li>
 </ol>
 <figure>
 <a><img src="http://pickou.cn/pics/git_log.png" /></a>

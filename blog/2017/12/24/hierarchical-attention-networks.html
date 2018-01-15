@@ -105,7 +105,7 @@ y_2 = D(C,y_1) \\
 y_3 = D(C,y_1,y_2)</script>
 
 <p>传统的语义表示方法的局限就体现出来了，在生成目标句子的单词的时候，无论是 <script type="math/tex">y_1</script> , <script type="math/tex">y_2</script> 还是 <script type="math/tex">y_3</script> ，都使用的语义编码C,没有变化,换句话来说就是句子X中的任意单词对于生成目标单词<script type="math/tex">y_i</script>的
-影响都是一样的，这明显是不科学的。attention就是为了解决这个不合理的地方，比如在翻译出<code class="highlighter-rouge">喜欢</code>这个词的时候，<code class="highlighter-rouge">love</code>的贡献率应该更大，而<code class="highlighter-rouge">Jack</code>和<code class="highlighter-rouge">Rose</code>就显得不那么重要了。
+影响都是一样的，这明显是不科学的。attention就是为了解决这个不合理的地方，比如在翻译出<code>喜欢</code>这个词的时候，<code>love</code>的贡献率应该更大，而<code>Jack</code>和<code>Rose</code>就显得不那么重要了。
 注意力机制要体现英文单词对于翻译当前中文单词的不同影响程度,类似于给出一个概率分布值，比如在翻译出喜欢这个词的时候,表示为<script type="math/tex">(Jack,0.3)(love,0.5)(Rose,0.2)</script>。</p>
 
 <p>引入注意力机制之后，目标句子中的每个单词都会学习对应源句子中每个单词的注意力分配概率的信息。这就相当于在生成每个单词<script type="math/tex">y_i</script>的时候，都会根据<script type="math/tex">y_1,y_2...y_{i-1}</script>来生成新的变化的<script type="math/tex">c_i</script>,

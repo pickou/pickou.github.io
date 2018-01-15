@@ -89,19 +89,19 @@
 <h2 id="1-rnn">1. RNN</h2>
 
 <p>下图是一个RNN循环展开的示意图，<script type="math/tex">x_t</script>是t时刻的输入，<script type="math/tex">s_t</script>是隐藏单元,<script type="math/tex">s_t=f(Ux_t+Ws_{t-1})</script>，
-激活函数f常用<code class="highlighter-rouge">tanh</code>和<code class="highlighter-rouge">RELU</code>.RNN的参数是共享的，即图中的<code class="highlighter-rouge">U</code>,<code class="highlighter-rouge">V</code>,<code class="highlighter-rouge">W</code>都是共享的参数.隐藏单元<code class="highlighter-rouge">s</code>是RNN的
-feature所在，包含了一个序列的特征。RNN的训练采用<code class="highlighter-rouge">BPTT</code>算法进行反向传播。</p>
+激活函数f常用<code>tanh</code>和<code>RELU</code>.RNN的参数是共享的，即图中的<code>U</code>,<code>V</code>,<code>W</code>都是共享的参数.隐藏单元<code>s</code>是RNN的
+feature所在，包含了一个序列的特征。RNN的训练采用<code>BPTT</code>算法进行反向传播。</p>
 
 <p><img src="http://pickou.cn/pics/rnn/RNN.png" alt="RNN" /></p>
 
 <h2 id="2-bptt">2. BPTT</h2>
 
-<p>【1】 <code class="highlighter-rouge">forward</code> <script type="math/tex">s_t=f(Ux_t+Ws_{t-1})</script>以及<script type="math/tex">o_t = softmax(Vs_t)</script></p>
+<p>【1】 <code>forward</code> <script type="math/tex">s_t=f(Ux_t+Ws_{t-1})</script>以及<script type="math/tex">o_t = softmax(Vs_t)</script></p>
 
-<p>【2】 <code class="highlighter-rouge">cross entropy</code> <script type="math/tex">E(y,\hat{y})=-\sum_t{y_tlog{\hat{y_t}}}</script></p>
+<p>【2】 <code>cross entropy</code> <script type="math/tex">E(y,\hat{y})=-\sum_t{y_tlog{\hat{y_t}}}</script></p>
 
-<p>【3】 <code class="highlighter-rouge">backward</code> 目标是计算误差对于参数<code class="highlighter-rouge">U</code>,<code class="highlighter-rouge">V</code>和<code class="highlighter-rouge">W</code>的梯度。将每个时刻的梯度相加<script type="math/tex">\frac{dE}{dW}=\sum_t{\frac{dE_t}{dW}}</script> ,
- <script type="math/tex">\frac{dE}{dV}=\sum_t{\frac{dE_t}{dV}}</script> ,<script type="math/tex">\frac{dE}{dU}=\sum_t{\frac{dE_t}{dU}}</script> .<code class="highlighter-rouge">V</code>的梯度每个时刻是独立的，不依赖于别的时刻,
+<p>【3】 <code>backward</code> 目标是计算误差对于参数<code>U</code>,<code>V</code>和<code>W</code>的梯度。将每个时刻的梯度相加<script type="math/tex">\frac{dE}{dW}=\sum_t{\frac{dE_t}{dW}}</script> ,
+ <script type="math/tex">\frac{dE}{dV}=\sum_t{\frac{dE_t}{dV}}</script> ,<script type="math/tex">\frac{dE}{dU}=\sum_t{\frac{dE_t}{dU}}</script> .<code>V</code>的梯度每个时刻是独立的，不依赖于别的时刻,
 t时刻,<script type="math/tex">\frac{dE_t}{dV}=(\hat{y_t}-y_t)\otimes{s_t}</script>.计算W的梯度却不太一样，根据链式求导法则，</p>
 
 <script type="math/tex; mode=display">\frac{dE_t}{dW}=\frac{dE_t}{d{\hat{y_t}}}\frac{d{\hat{y_t}}}{ds_t}\frac{ds_t}{dW}</script>
@@ -121,13 +121,13 @@ t时刻,<script type="math/tex">\frac{dE_t}{dV}=(\hat{y_t}-y_t)\otimes{s_t}</scr
 <p><img src="http://pickou.cn/pics/rnn/lstm_example.png" alt="lstm" /></p>
 
 <ul>
-  <li><code class="highlighter-rouge">forget gate</code> 激活函数为sigmoid,输出为1，完全通过，输出为0，完全丢失。</li>
+  <li><code>forget gate</code> 激活函数为sigmoid,输出为1，完全通过，输出为0，完全丢失。</li>
 </ul>
 
 <p><img src="http://pickou.cn/pics/rnn/which_to_forget.png" alt="forget_gate" /></p>
 
 <ul>
-  <li><code class="highlighter-rouge">存储单元</code> 通过<script type="math/tex">i_t</script>来选择是否让<script type="math/tex">\tilde{C_t}</script>加入到输出中</li>
+  <li><code>存储单元</code> 通过<script type="math/tex">i_t</script>来选择是否让<script type="math/tex">\tilde{C_t}</script>加入到输出中</li>
 </ul>
 
 <p><img src="http://pickou.cn/pics/rnn/strore_cell.png" alt="strore_cell" /></p>
