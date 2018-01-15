@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DianNao Accelerator paper reading - Minerva</title>
+    <title>DianNao Accelerator - Minerva</title>
     <meta name="author"  content="jcyan">
-    <meta name="description" content="DianNao Accelerator paper reading">
+    <meta name="description" content="DianNao Accelerator">
     <meta name="keywords"  content="convolution, accelerator, DL">
     <!-- Open Graph -->
-    <meta property="og:title" content="DianNao Accelerator paper reading - Minerva">
+    <meta property="og:title" content="DianNao Accelerator - Minerva">
     <meta property="og:type" content="website">
     <meta property="og:url" content="http://pickou.cn/blog/2018/01/08/DianNao-Accelerator.html">
     <meta property="og:description" content="Minerva is the goddess of wisdom in ancient Rome. Here for inpiration and idea spreading.">
@@ -24,7 +24,7 @@
     <!--[if lt IE 10]>
 <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
 <![endif]-->
-<input id="nm-switch" type="hidden" value="true">
+<input id="nm-switch" type="hidden" value="false">
 
 <header class="g-header">
     <div class="g-logo">
@@ -56,7 +56,7 @@
             
             
         </div>
-        <h1>DianNao Accelerator paper reading</h1>
+        <h1>DianNao Accelerator</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="http://pickou.cn" target="_blank" rel="author">jcyan</a></></span>
             <time class="post-meta-item" datetime="18-01-08"><i class="iconfont icon-date"></i>08 Jan 2018</time>
@@ -88,14 +88,23 @@
 
 <p><img src="http://pickou.cn/pics/diannao/selected-layer.png" alt="" /></p>
 
-<p>为了加速神经网络，就需要解决<strong>memory traffic</strong>问题，接下类分析这三个layer的data locality</p>
+<p>要加速神经网络，<strong>memory traffic</strong>显然是一个很重要的方面，接下类分析这三个layer的data locality
+，通过<strong>tiling</strong>调整三个layer作为baseline.用了<code class="highlighter-rouge">cache simulator</code>来测出memory bandwidth, 其中cache
+simulator所需要的输入应该是用模拟器产生的，模拟器可以由 Gem5 改写而成。文中做了一个假设，那就是循环
+的每一轮都能处理<script type="math/tex">T_n</script>个neurons和<script type="math/tex">T_i</script>个synapses。</p>
 
 <ul>
   <li>classifier layer</li>
 </ul>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>range<span class="o">(</span>1, 2<span class="o">)</span>
-</code></pre></div></div>
+<p>一个classifier layer写出表达式如下，如果略掉偏执b，那么其实就是一个向量乘以一个矩阵，我们看这个向量其实会用很多次，
+如果向量一直存在cache中，那么访存就会少很多。学体系结构的人都知道，程序的大部分时间都花在了访存上了，所以通过减少访
+存的次数，可以减少运行时间。<strong>loop tiling</strong>是很常用的方法，思想就是<code class="highlighter-rouge">将数据局部性好的数据尽量都保持在cache中</code>。数据局部性
+包含两部分，一部分是temporal locality，这是时间上的，就是说经常用到。一部分是spacial locality,就是空间上了，存储在连续空间的
+数据spacial locality会比较好。</p>
+
+<script type="math/tex; mode=display">y=xw+b</script>
+
 <p><img src="http://pickou.cn/pics/diannao/classifier_layer.png" alt="" /></p>
 
 <ul>
@@ -152,6 +161,15 @@
         
     </section>
     <section class="post-footer-item read-next">
+        
+        <div class="read-next-item">
+            <a href="/blog/2018/01/11/fasttext-source-code.html" class="read-next-link"></a>
+            <section>
+                <span>fasttext source code reading</span>
+                <p>fasttext整个实现并不复杂，整个工程简洁，清楚，是个很好的开源项目，适合我这种新手作为源码阅读的起步。pro...</p>
+            </section>
+            
+        </div>
         
         
         <div class="read-next-item">

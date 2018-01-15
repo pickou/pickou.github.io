@@ -1,7 +1,13 @@
 [
   
     {
-      "title"    : "DianNao Accelerator paper reading",
+      "title"    : "fasttext source code reading",
+      "tags"     : "c++ fasttext tool",
+      "url"      : "/blog/2018/01/11/fasttext-source-code.html"
+    } ,
+  
+    {
+      "title"    : "DianNao Accelerator",
       "tags"     : "convolution accelerator DL",
       "url"      : "/blog/2018/01/08/DianNao-Accelerator.html"
     } ,
