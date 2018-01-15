@@ -21,46 +21,33 @@ int main(int argc, char** argv) {
       if (args.size() < 2) {
               printUsage();
                   exit(EXIT_FAILURE);
-                    
       }
         std::string command(args[1]);
         if (command == "skipgram" || command == "cbow" || command == "supervised") {
                 train(args);
-                  
         } else if (command == "test") {
                 test(args);
-                  
         } else if (command == "quantize") {
                 quantize(args);
-                  
         } else if (command == "print-word-vectors") {
                 printWordVectors(args);
-                  
         } else if (command == "print-sentence-vectors") {
                 printSentenceVectors(args);
-                  
         } else if (command == "print-ngrams") {
                 printNgrams(args);
-                  
         } else if (command == "nn") {
                 nn(args);
-                  
         } else if (command == "analogies") {
                 analogies(args);
-                  
         } else if (command == "predict" || command == "predict-prob") {
                 predict(args);
-                  
         } else if (command == "dump") {
                 dump(args);
-                  
         } else {
                 printUsage();
                     exit(EXIT_FAILURE);
-                      
         }
           return 0;
-
 }
 ```
 
@@ -267,11 +254,11 @@ void Dictionary::initTableDiscard() {
 }
 ```
 + initNgrams主要部分在computeSubwords这个函数中，所以找到这个函数分析。
-```
+```cpp
  if ((word[i] & 0xC0) == 0x80) continue;
 ```
 这句话为了检测编码是不是10开头的utf-8，因为10开始的utf-8编码，表示一个多字节序的子序,具体的可以参见reference.
-数据处理这部分就算差不多了,接着去看模型训练的过程,
+数据处理这部分就算差不多了,接着去看模型训练的过程.
 
 还是接着看train函数，loadVector这个函数就没什么好看的了，就是从文件中读取训练好的embedding.接下来，看到这段代码的时候，
 这就是开始了模型的训练，两个模块比较重要，一个是**startThreads()**,另外一个就是**Model**。
