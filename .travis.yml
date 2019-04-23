@@ -23,6 +23,5 @@ env:
     global:
         # Github Pages
         - GH_REF: github.com/pickou/pickou.github.io.git #设置GH_REF，注意更改成自己的仓库地址
-        #- travis_gh_token: ad370b730e98ee5a7a820e1942acd05389f37a9f
         # Coding Pages https://git.coding.net/hadronw/hadronw.git
         #- CO_REF: git.coding.net/hadronw/hadronw.git
