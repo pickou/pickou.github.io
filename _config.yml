@@ -92,5 +92,5 @@ theme: next
 deploy:
   type:git
   repo:https://github.com/pickou/pickou.github.io
-  branch: master
+  branch:master
   
