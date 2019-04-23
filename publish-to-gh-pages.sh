@@ -1,11 +1,12 @@
 #!/bin/bash
 set -ev
-git clone https://${GH_REF} .deploy_git
-cd .deploy_git
-git checkout master
-cd ../
-mv .deploy_git/.git/ ./public/
+#git clone https://${GH_REF} .deploy_git
+#cd .deploy_git
+#git checkout master
+#cd ../
+#mv .deploy_git/.git/ ./public/
 cd ./public
+git init
 git config user.name  "pickou"
 git config user.email "472179216@qq.com" 
 # add commit timestamp
