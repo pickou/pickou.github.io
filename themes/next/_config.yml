@@ -140,8 +140,8 @@ menu_settings:
 # Schemes
 #scheme: Muse
 #scheme: Mist
-#scheme: Pisces
-scheme: Gemini
+scheme: Pisces
+#scheme: Gemini
 
 
 # ---------------------------------------------------------------
@@ -225,8 +225,8 @@ toc:
 
 sidebar:
   # Sidebar Position, available value: left | right (only for Pisces | Gemini).
-  position: left
-  #position: right
+  #position: left
+  position: right
 
   # Manual define the sidebar width.
   # If commented, will be default for:
