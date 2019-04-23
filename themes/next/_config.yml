@@ -138,10 +138,10 @@ menu_settings:
 # ---------------------------------------------------------------
 
 # Schemes
-scheme: Muse
+#scheme: Muse
 #scheme: Mist
 #scheme: Pisces
-#scheme: Gemini
+scheme: Gemini
 
 
 # ---------------------------------------------------------------
@@ -230,8 +230,8 @@ sidebar:
 
   # Manual define the sidebar width.
   # If commented, will be default for:
-  Muse | Mist: 320
-  #Pisces | Gemini: 240
+  #Muse | Mist: 320
+  Pisces | Gemini: 240
   #width: 300
 
   # Sidebar Display, available value (only for Muse | Mist):
