@@ -11,6 +11,8 @@ git config user.name  "pickou"
 git config user.email "472179216@qq.com" 
 # add commit timestamp
 git add .
+git status
+ls
 git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
 git push --force "https://${travis_gh_token}@${GH_REF}" master:master
 #git push --force --quiet "https://${travis_gh_token}@${GH_REF}" master:master
