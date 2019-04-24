@@ -2,12 +2,12 @@
 <!-- LOCAL: You can save these files to your site and update links -->
     {% if theme.gitment.mint %}
         {% set CommentsClass = "Gitmint" %}
-        <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+		<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
     {% else %}
         {% set CommentsClass = "Gitment" %}
-        <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.js"></script>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css"/>
+        <link rel="stylesheet" href="https://www.wenjunjiang.win/css/gitment.css">
+		<script src="https://www.wenjunjiang.win/js/gitment.js"></script>
     {% endif %}
 <!-- END LOCAL -->
 
