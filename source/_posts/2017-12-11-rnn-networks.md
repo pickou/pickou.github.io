@@ -27,7 +27,7 @@ feature所在，包含了一个序列的特征。RNN的训练采用`BPTT`算法�
 
 ## 2. BPTT
 
- 【1】 `forward` $s_t=f(Ux_t+Ws_{t-1})$$以及$o_t = softmax(Vs_t)$
+ 【1】 `forward` $s_t=f(Ux_t+Ws_{t-1})$以及$o_t = softmax(Vs_t)$
 
  【2】 `cross entropy` $E(y,\hat{y})=-\sum_t{y_tlog{\hat{y_t}}}$
 
