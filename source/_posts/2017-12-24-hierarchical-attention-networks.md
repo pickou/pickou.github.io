@@ -54,8 +54,7 @@ $$
 
 {% asset_img am-encoder-decoder.png  attention-based encoder-decoder %}
 
-对于上面那个例子，其对应的翻译过程可能如下,其中$F$函数是encoder对英文单词的变换函数，如果是RNN模型，那么$F$对应的结果是某个时刻隐层节点的状态值，
-$G$函数代表encoder根据单词的中间表示合成整个句子中间语义表示的变换函数，一般是对构成元素加权求和。
+对于上面那个例子，其对应的翻译过程可能如下,其中$F$函数是encoder对英文单词的变换函数，如果是RNN模型，那么$F$对应的结果是某个时刻隐层节点的状态值，$G$函数代表encoder根据单词的中间表示合成整个句子中间语义表示的变换函数，一般是对构成元素加权求和。
 
 $$
 c_{杰克} =G(0.6*F('Jack'),0.2*F('love),0.2*F('Rose')) \\
@@ -80,31 +79,27 @@ attention的结构，就是将之前的隐层单元输出都收集起来，对�
 
 ### Attention for document classification
 hierarchical attention network描述了**文档的结构**，文档是由句子构成的，句子是由单词构成的。又加入了**两个层次的attention机制**，一个是句子级的,一个是单词级的，
-给出了单词和句子对于整个信息的不同贡献程度。
-一个文档有$L$个句子$s\_i$，每个句子有$T\_i$个词，$w\_{it}$表示第i句话中的第t个词
+给出了单词和句子对于整个信息的不同贡献程度。一个文档有$L$个句子$s\_i$，每个句子有$T\_i$个词，$w\_{it}$表示第i句话中的第t个词
 
 {% asset_img HAN.png hierarchical-atention-networks %}
 
 
 * word encoder
 
-一开始，需要通过embedding矩阵$W_e$转化为对应的embedding,然后通过双向的GRU，获得前向的hidden state，和反向的hidden state,组合成为一个新的$h\_{it}$,
-这样都把这个词的语义用周围的词表示出来了。
+一开始，需要通过embedding矩阵$W_e$转化为对应的embedding,然后通过双向的GRU，获得前向的hidden state，和反向的hidden state,组合成为一个新的$h\_{it}$,这样都把这个词的语义用周围的词表示出来了。
 
 {% asset_img word-encoder.png word encoder %}
 
 * word attention
 
-不是所有的词都是一句话的重点，所以，引入了attention的机制。先让$h\_it$通过一个单层的MLP,得到$h\_{it}$的隐层表示$u\_{it}$,
-然后通过计算$u\_{it}$和$u\_w$之间的相似度来衡量这个词对于句子语义的重要程度。$u\_w$随机初始化的，通过训练学习得到。通过
+不是所有的词都是一句话的重点，所以，引入了attention的机制。先让$h\_it$通过一个单层的MLP,得到$h\_{it}$的隐层表示$u\_{it}$,然后通过计算$u\_{it}$和$u\_w$之间的相似度来衡量这个词对于句子语义的重要程度。$u\_w$随机初始化的，通过训练学习得到。通过
 softmax,最后对所有单词加权和得到句子的表示$s\_i$。
 
 {% asset_img word_attention.png word attention %}
 
 * sentence encoder
 
-不是所有的句子都是一个文档的重点，所以，在句子级也引入了attention机制。同理，对于每个句子$s\_i$,前向和后向的hidden units组合成一个新的$h\_{it}$,
-然后通过同样的方式引入attention,最后加权求和得到整个文档的语义表示$v$。
+不是所有的句子都是一个文档的重点，所以，在句子级也引入了attention机制。同理，对于每个句子$s\_i$,前向和后向的hidden units组合成一个新的$h\_{it}$,然后通过同样的方式引入attention,最后加权求和得到整个文档的语义表示$v$。
 
 {% asset_img sentence-encoder.png sentence encoder %}
 
