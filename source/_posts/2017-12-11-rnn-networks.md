@@ -19,7 +19,7 @@ Introduce basics knowledges about recurrent neural networks !
 
 ## 1. RNN
 
-下图是一个RNN循环展开的示意图，$x_t$是t时刻的输入，$s_t$是隐藏单元,$s_t=f(Ux_t+Ws_{t-1})$，
+下图是一个RNN循环展开的示意图，$x\_t$是t时刻的输入，$s\_t$是隐藏单元,$s\_t=f(Ux\_t+Ws\_{t-1})$，
 激活函数f常用`tanh`和`RELU`.RNN的参数是共享的，即图中的`U`,`V`,`W`都是共享的参数.隐藏单元`s`是RNN的
 feature所在，包含了一个序列的特征。RNN的训练采用`BPTT`算法进行反向传播。
 
