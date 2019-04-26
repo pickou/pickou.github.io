@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"right","Pisces | Gemini":240,"display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="fasttext c++ source code reading">
+<meta name="keywords" content="c++,fasttext,tool">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fasttext source code reading">
+<meta property="og:url" content="http://pickou.cn/post/28086dee.html">
+<meta property="og:site_name" content="Minerva">
+<meta property="og:description" content="fasttext c++ source code reading">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-04-26T11:17:00.348Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="fasttext source code reading">
+<meta name="twitter:description" content="fasttext c++ source code reading">
+
+
+
+
+
+
+  <link rel="canonical" href="http://pickou.cn/post/28086dee.html">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>fasttext source code reading | Minerva</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?89000deb423a757f7de10c3953edd916";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Minerva</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">业精于勤，荒于嬉</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://pickou.cn/post/28086dee.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jcyan">
+      <meta itemprop="description" content="All things I interest in!">
+      <meta itemprop="image" content="/images/jcyan.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Minerva">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">fasttext source code reading
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+              
+
+              
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-26 19:17:00" itemprop="dateModified" datetime="2019-04-26T19:17:00+08:00">2019-04-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/blog/" itemprop="url" rel="index"><span itemprop="name">blog</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/post/28086dee.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/post/28086dee.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+              <div class="post-description">fasttext c++ source code reading</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>fasttext整个实现并不复杂，整个工程简洁，清楚，是个很好的开源项目，适合我这种新手作为源码阅读的起步。</p>
+<h3 id="project-architecture"><a href="#project-architecture" class="headerlink" title="project architecture"></a>project architecture</h3><p>拿到一份代码之后，首先得分析整个工程的结构,能让你看清楚一个project的结构的有两部分，一部分是<code>main函数</code>，<br>还有一部分是<code>头文件.h</code>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span> </span>&#123;</span><br><span class="line">      <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; args(argv, argv + argc);</span><br><span class="line">      <span class="keyword">if</span> (args.size() &lt; <span class="number">2</span>) &#123;</span><br><span class="line">              printUsage();</span><br><span class="line">                  <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">      &#125;</span><br><span class="line">        <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">command</span><span class="params">(args[<span class="number">1</span>])</span></span>;</span><br><span class="line">        <span class="keyword">if</span> (command == <span class="string">"skipgram"</span> || command == <span class="string">"cbow"</span> || command == <span class="string">"supervised"</span>) &#123;</span><br><span class="line">                train(args);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (command == <span class="string">"test"</span>) &#123;</span><br><span class="line">                test(args);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (command == <span class="string">"quantize"</span>) &#123;</span><br><span class="line">                quantize(args);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (command == <span class="string">"print-word-vectors"</span>) &#123;</span><br><span class="line">                printWordVectors(args);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (command == <span class="string">"print-sentence-vectors"</span>) &#123;</span><br><span class="line">                printSentenceVectors(args);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (command == <span class="string">"print-ngrams"</span>) &#123;</span><br><span class="line">                printNgrams(args);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (command == <span class="string">"nn"</span>) &#123;</span><br><span class="line">                nn(args);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (command == <span class="string">"analogies"</span>) &#123;</span><br><span class="line">                analogies(args);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (command == <span class="string">"predict"</span> || command == <span class="string">"predict-prob"</span>) &#123;</span><br><span class="line">                predict(args);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (command == <span class="string">"dump"</span>) &#123;</span><br><span class="line">                dump(args);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                printUsage();</span><br><span class="line">                    <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">        &#125;</span><br><span class="line">          <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从main函数中可以看到整个fasttext有哪些功能。现在我从<code>train(args)</code>入手，看fasttext训练embedding的整个过程。</p>
+<h3 id="train"><a href="#train" class="headerlink" title="train"></a>train</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">train</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; args)</span> </span>&#123;</span><br><span class="line">    Args a = Args(); <span class="comment">// 参数解析的类</span></span><br><span class="line">    a.parseArgs(args); <span class="comment">//解析参数</span></span><br><span class="line">    FastText fasttext; <span class="comment">// fasttext类</span></span><br><span class="line">    fasttext.train(a); <span class="comment">// 训练</span></span><br><span class="line">    fasttext.saveModel(); <span class="comment">// 保存模型</span></span><br><span class="line">    fasttext.saveVectors(); <span class="comment">// 保存训练好的embedding</span></span><br><span class="line">    <span class="keyword">if</span> (a.saveOutput) &#123;</span><br><span class="line">        fasttext.saveOutput();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么，接下来重点就放到一个<code>Args</code>参数解析类和<code>fasttext</code>类上。</p>
+<h3 id="Args"><a href="#Args" class="headerlink" title="Args"></a>Args</h3><p>可以看到，Args类的成员变量就是fasttext<br>需要的参数。参数的具体意义可以在这里找到<a href="https://github.com/facebookresearch/fastText/blob/master/docs/options.md" target="_blank" rel="noopener">link</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Args</span> &#123;</span></span><br><span class="line">  <span class="keyword">protected</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">lossToString</span><span class="params">(loss_name)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">boolToString</span><span class="params">(<span class="keyword">bool</span>)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">modelToString</span><span class="params">(model_name)</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    Args();<span class="comment">// 构造函数</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> input;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> output;</span><br><span class="line">    <span class="keyword">double</span> lr; <span class="comment">// learning rate</span></span><br><span class="line">    <span class="keyword">int</span> lrUpdateRate; <span class="comment">// change the rate of updates for the learning rate</span></span><br><span class="line">    <span class="keyword">int</span> dim; <span class="comment">// embedding 维度</span></span><br><span class="line">    <span class="keyword">int</span> ws; <span class="comment">// size of context window</span></span><br><span class="line">    <span class="keyword">int</span> epoch; <span class="comment">// 迭代次数</span></span><br><span class="line">    <span class="keyword">int</span> minCount;</span><br><span class="line">    <span class="keyword">int</span> minCountLabel;</span><br><span class="line">    <span class="keyword">int</span> neg; <span class="comment">// number of negatives sampled</span></span><br><span class="line">    <span class="keyword">int</span> wordNgrams;</span><br><span class="line">    loss_name loss;</span><br><span class="line">    model_name model;</span><br><span class="line">    <span class="keyword">int</span> bucket;</span><br><span class="line">    <span class="keyword">int</span> minn;</span><br><span class="line">    <span class="keyword">int</span> maxn;</span><br><span class="line">    <span class="keyword">int</span> thread;</span><br><span class="line">    <span class="keyword">double</span> t;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> label;</span><br><span class="line">    <span class="keyword">int</span> verbose;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> pretrainedVectors;</span><br><span class="line">    <span class="keyword">bool</span> saveOutput;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">bool</span> qout;</span><br><span class="line">    <span class="keyword">bool</span> retrain;</span><br><span class="line">    <span class="keyword">bool</span> qnorm;</span><br><span class="line">    <span class="keyword">size_t</span> cutoff;</span><br><span class="line">    <span class="keyword">size_t</span> dsub;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">parseArgs</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt;&amp; args)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printHelp</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printBasicHelp</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printDictionaryHelp</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printTrainingHelp</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printQuantizationHelp</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">save</span><span class="params">(<span class="built_in">std</span>::ostream&amp;)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">load</span><span class="params">(<span class="built_in">std</span>::istream&amp;)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dump</span><span class="params">(<span class="built_in">std</span>::ostream&amp;)</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>构造函数里面给成员变量赋初值，从这个类里面学会了<code>enum class</code>的妙用,<br>enum class 是c++ 11的特性，<a href="https://zhuanlan.zhihu.com/p/21722362" target="_blank" rel="noopener">link</a><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="class"><span class="keyword">class</span> <span class="title">loss_name</span>:</span> <span class="keyword">int</span> &#123;hs=<span class="number">1</span>, ns, softmax&#125;;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> Args::lossToString(loss_name ln) <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="keyword">switch</span> (ln) &#123;</span><br><span class="line">    <span class="keyword">case</span> loss_name::hs:</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"hs"</span>;</span><br><span class="line">    <span class="keyword">case</span> loss_name::ns:</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"ns"</span>;</span><br><span class="line">    <span class="keyword">case</span> loss_name::softmax:</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"softmax"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">"Unknown loss!"</span>; <span class="comment">// should never happen</span></span><br><span class="line">&#125;<span class="class"><span class="keyword">class</span> <span class="title">Model</span> &#123;</span></span><br><span class="line">  <span class="keyword">protected</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Matrix&gt; wi_;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Matrix&gt; wo_;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;QMatrix&gt; qwi_;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;QMatrix&gt; qwo_;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Args&gt; args_;</span><br><span class="line">    Vector hidden_;</span><br><span class="line">    Vector output_;</span><br><span class="line">    Vector grad_;</span><br><span class="line">    <span class="keyword">int32_t</span> hsz_;</span><br><span class="line">    <span class="keyword">int32_t</span> osz_;</span><br><span class="line">    real loss_;</span><br><span class="line">    <span class="keyword">int64_t</span> nexamples_;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;real&gt; t_sigmoid_;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;real&gt; t_log_;</span><br><span class="line">    <span class="comment">// used for negative sampling:</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt; negatives_;</span><br><span class="line">    <span class="keyword">size_t</span> negpos;</span><br><span class="line">    <span class="comment">// used for hierarchical softmax:</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt; &gt; paths;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; &gt; codes;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Node&gt; tree;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">comparePairs</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::pair&lt;real, <span class="keyword">int32_t</span>&gt;&amp;,</span></span></span><br><span class="line"><span class="function"><span class="params">                             <span class="keyword">const</span> <span class="built_in">std</span>::pair&lt;real, <span class="keyword">int32_t</span>&gt;&amp;)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int32_t</span> getNegative(<span class="keyword">int32_t</span> target);</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initSigmoid</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initLog</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int32_t</span> NEGATIVE_TABLE_SIZE = <span class="number">10000000</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    Model(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Matrix&gt;, <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Matrix&gt;,</span><br><span class="line">          <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Args&gt;, <span class="keyword">int32_t</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function">real <span class="title">binaryLogistic</span><span class="params">(<span class="keyword">int32_t</span>, <span class="keyword">bool</span>, real)</span></span>;</span><br><span class="line">    <span class="function">real <span class="title">negativeSampling</span><span class="params">(<span class="keyword">int32_t</span>, real)</span></span>;</span><br><span class="line">    <span class="function">real <span class="title">hierarchicalSoftmax</span><span class="params">(<span class="keyword">int32_t</span>, real)</span></span>;</span><br><span class="line">    <span class="function">real <span class="title">softmax</span><span class="params">(<span class="keyword">int32_t</span>, real)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">predict</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt;&amp;, <span class="keyword">int32_t</span>, real,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::pair&lt;real, <span class="keyword">int32_t</span>&gt;&gt;&amp;,</span></span></span><br><span class="line"><span class="function"><span class="params">                 Vector&amp;, Vector&amp;)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">predict</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt;&amp;, <span class="keyword">int32_t</span>, real,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::pair&lt;real, <span class="keyword">int32_t</span>&gt;&gt;&amp;)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int32_t</span>, real, <span class="keyword">int32_t</span>, real,</span></span></span><br><span class="line"><span class="function"><span class="params">             <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::pair&lt;real, <span class="keyword">int32_t</span>&gt;&gt;&amp;,</span></span></span><br><span class="line"><span class="function"><span class="params">             Vector&amp;)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">findKBest</span><span class="params">(<span class="keyword">int32_t</span>, real, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::pair&lt;real, <span class="keyword">int32_t</span>&gt;&gt;&amp;,</span></span></span><br><span class="line"><span class="function"><span class="params">                   Vector&amp;, Vector&amp;)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt;&amp;, <span class="keyword">int32_t</span>, real)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">computeHidden</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt;&amp;, Vector&amp;)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">computeOutputSoftmax</span><span class="params">(Vector&amp;, Vector&amp;)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">computeOutputSoftmax</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setTargetCounts</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int64_t</span>&gt;&amp;)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initTableNegatives</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int64_t</span>&gt;&amp;)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">buildTree</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int64_t</span>&gt;&amp;)</span></span>;</span><br><span class="line">    <span class="function">real <span class="title">getLoss</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function">real <span class="title">sigmoid</span><span class="params">(real)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function">real <span class="title">log</span><span class="params">(real)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function">real <span class="title">std_log</span><span class="params">(real)</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::minstd_rand rng;</span><br><span class="line">    <span class="keyword">bool</span> quant_;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setQuantizePointer</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;QMatrix&gt;, <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;QMatrix&gt;, <span class="keyword">bool</span>)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>我更关心的是fasttext类,所以赶紧去看看fasttext.h。</p>
+<h3 id="fasttext"><a href="#fasttext" class="headerlink" title="fasttext"></a>fasttext</h3><p>这里就不放代码了,还是从<a href="https://github.com/facebookresearch/fastText/blob/master/src/fasttext.h" target="_blank" rel="noopener">fasttext.h</a>入手，<br>我关心这几个方面，一个方面是输入是如何读取的,第二个是如何训练的,用的什么数据结构，第三个是模型存储是怎么做到的，用的什么方式。<br>在这个头文件中，看到<code>std::shared_ptr</code>，这是c++11的特性，传统的动态内存分配和释放使用new和delete,但是很容易出现忘记释放内存的情况，<br>这个时候<strong>智能指针</strong>就解决了这个问题，它自动释放内存,是<strong>模板</strong>，初始化的方法和vector是一样的,存在头文件<strong>memory</strong>中。另外一个<br>就是使用了很多<code>const</code>，TODO             。找到<a href="https://github.com/facebookresearch/fastText/blob/master/src/fasttext.cc" target="_blank" rel="noopener">fasttext.cc</a><br>,找到train函数，其中输入数据读取是由下面这个函数解决的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dict_ = <span class="built_in">std</span>::make_shared&lt;Dictionary&gt;(args_);</span><br><span class="line"><span class="built_in">std</span>::<span class="function">ifstream <span class="title">ifs</span><span class="params">(args_-&gt;input)</span></span>;</span><br><span class="line"><span class="keyword">if</span> (!ifs.is_open()) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="built_in">std</span>::invalid_argument(</span><br><span class="line">        args_-&gt;input + <span class="string">" cannot be opened for training!"</span></span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line">  dict_-&gt;readFromFile(ifs);</span><br><span class="line">  ifs.close();`</span><br></pre></td></tr></table></figure>
+<p>接下去就该去<a href="https://github.com/facebookresearch/fastText/blob/master/src/dictionary.h" target="_blank" rel="noopener">dictionary.h</a>中寻找输入读取的细节。首先找到readFromFile这个函数,比较关键的几个函数分别是<code>readWord(word)</code>,<code>add(word)</code>,<code>threshhold</code>, <code>initTableDiscard</code>和<code>initNgrams</code>。</p>
+<ul>
+<li>先去看readWord，发现这个函数就是读取一个词的，分割符号类似<code>&quot; &quot;, &quot;\r&quot;, &quot;\t&quot;</code>之类的</li>
+<li>add的实现有些技巧，使用了hash的方式将词进行编码，这样在查找词的时候就会更快，hash采用的32位的<a href="http://www.cppblog.com/koson/archive/2010/03/11/109446.html" target="_blank" rel="noopener">NFV算法</a>,<br>词被存在<strong>words_</strong>里面，它是个vector,每个元素是一个entry的结构体，包含了这个词，词的词频，以及是label还是word,还有子单词的信息。</li>
+<li>threshold是为了去掉频率过低和过高的词,这里用到了<strong>lambda</strong>表达式<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">words_.erase(remove_if(words_.begin(), words_.end(), [&amp;](<span class="keyword">const</span> entry&amp; e) &#123;</span><br><span class="line">    <span class="keyword">return</span> (e.type == entry_type::word &amp;&amp; e.count &lt; t) ||</span><br><span class="line">            (e.type == entry_type::label &amp;&amp; e.count &lt; tl);</span><br><span class="line">    &#125;), words_.end());</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>remove_if和erase一般成对出现,lambda表达式查阅<a href="http://zh.cppreference.com/w/cpp/language/lambda" target="_blank" rel="noopener">link</a><br>同时，vector里面使用了函数<code>shrink_to_fit</code>,这个函数可以释放掉vector中被erase掉的内存空间。</p>
+<ul>
+<li><p>initTableDiscard，从新计算一个词的词频，并把计算的词频放到pdiscard_中,这里采用了一个技巧,计算词频的时候做了一个<br>缩放<script type="math/tex">\sqrt{x/f}+x/f</script>，其中f取0.0001,这样能保证f过小的时候整个数不会太大，f过大的时候整个值也不会太小。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> Dictionary::initTableDiscard() &#123;</span><br><span class="line">    pdiscard_.resize(size_);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; size_; i++) &#123;</span><br><span class="line">        real f = real(words_[i].count) / real(ntokens_);</span><br><span class="line">        pdiscard_[i] = <span class="built_in">std</span>::<span class="built_in">sqrt</span>(args_-&gt;t / f) + args_-&gt;t / f;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>initNgrams主要部分在computeSubwords这个函数中，所以找到这个函数分析。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((word[i] &amp; <span class="number">0xC0</span>) == <span class="number">0x80</span>) <span class="keyword">continue</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这句话为了检测编码是不是10开头的utf-8，因为10开始的utf-8编码，表示一个多字节序的子序,具体的可以参见reference.<br>数据处理这部分就算差不多了,接着去看模型训练的过程.</p>
+<p>还是接着看train函数，loadVector这个函数就没什么好看的了，就是从文件中读取训练好的embedding.接下来，看到这段代码的时候，<br>这就是开始了模型的训练，两个模块比较重要，一个是<strong>startThreads()</strong>,另外一个就是<strong>Model</strong>。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">startThreads();</span><br><span class="line">model_ = <span class="built_in">std</span>::make_shared&lt;Model&gt;(input_, output_, args_, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (args_-&gt;model == model_name::sup) &#123;</span><br><span class="line">        model_-&gt;setTargetCounts(dict_-&gt;getCounts(entry_type::label));</span><br><span class="line">          </span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        model_-&gt;setTargetCounts(dict_-&gt;getCounts(entry_type::word));</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>startThreads  把线程放到vector中，用lambda表达式的值传递方式建立线程,之后采用join方式阻塞线程。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::thread&gt; threads;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int32_t</span> i = <span class="number">0</span>; i &lt; args_-&gt;thread; i++) &#123;</span><br><span class="line">    threads.push_back(<span class="built_in">std</span>::thread([=]() &#123; trainThread(i);  &#125;));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int32_t</span> i = <span class="number">0</span>; i &lt; args_-&gt;thread; i++) &#123;</span><br><span class="line">    threads[i].join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Model 先将Model分析清楚再去分析trainThread函数，找到<a href="https://github.com/facebookresearch/fastText/blob/master/src/model.h" target="_blank" rel="noopener">Model.h</a>,<br>这个类就是整个fasttext的核心算法所在了。Model里面包含了很多东西，有关quantize的先放到后面分析，看README知道这是后面增加的feature,这个方式<br>下内存占用会变小,这其实就是对网络做了一个压缩。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Model</span> &#123;</span></span><br><span class="line">  <span class="keyword">protected</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Matrix&gt; wi_; <span class="comment">//连接input的权值,其中Matrix类以vector存储了二维的数组，并定义了很多类方法，比如l2NormRow, dotRow等等</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Matrix&gt; wo_; <span class="comment">//连接output的权值</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;QMatrix&gt; qwi_;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;QMatrix&gt; qwo_;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Args&gt; args_;</span><br><span class="line">    Vector hidden_; <span class="comment">// 隐藏层单元，Vector类以vector存储隐层单元的值，也定义了很多基于vector的方法</span></span><br><span class="line">    Vector output_; <span class="comment">// 输出层，类型也是Vector</span></span><br><span class="line">    Vector grad_; <span class="comment">// 梯度值</span></span><br><span class="line">    <span class="keyword">int32_t</span> hsz_;</span><br><span class="line">    <span class="keyword">int32_t</span> osz_;</span><br><span class="line">    real loss_; <span class="comment">// loss值，real即为float</span></span><br><span class="line">    <span class="keyword">int64_t</span> nexamples_; <span class="comment">// 样本总数</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;real&gt; t_sigmoid_; <span class="comment">// 经过sigmoid之后的值</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;real&gt; t_log_; <span class="comment">//经过</span></span><br><span class="line">    <span class="comment">// used for negative sampling:</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt; negatives_;</span><br><span class="line">    <span class="keyword">size_t</span> negpos;</span><br><span class="line">    <span class="comment">// used for hierarchical softmax:</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt; &gt; paths;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt; <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; &gt; codes; <span class="comment">//存储哈夫曼编码</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Node&gt; tree; <span class="comment">//存储这个编码树</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">comparePairs</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::pair&lt;real, <span class="keyword">int32_t</span>&gt;&amp;,</span></span></span><br><span class="line"><span class="function"><span class="params">                             <span class="keyword">const</span> <span class="built_in">std</span>::pair&lt;real, <span class="keyword">int32_t</span>&gt;&amp;)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int32_t</span> getNegative(<span class="keyword">int32_t</span> target);</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initSigmoid</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initLog</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int32_t</span> NEGATIVE_TABLE_SIZE = <span class="number">10000000</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    Model(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Matrix&gt;, <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Matrix&gt;,</span><br><span class="line">          <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;Args&gt;, <span class="keyword">int32_t</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function">real <span class="title">binaryLogistic</span><span class="params">(<span class="keyword">int32_t</span>, <span class="keyword">bool</span>, real)</span></span>; <span class="comment">// logistic回归</span></span><br><span class="line">    <span class="function">real <span class="title">negativeSampling</span><span class="params">(<span class="keyword">int32_t</span>, real)</span></span>; <span class="comment">// negative sampling 方法</span></span><br><span class="line">    <span class="function">real <span class="title">hierarchicalSoftmax</span><span class="params">(<span class="keyword">int32_t</span>, real)</span></span>; <span class="comment">// hs方法</span></span><br><span class="line">    <span class="function">real <span class="title">softmax</span><span class="params">(<span class="keyword">int32_t</span>, real)</span></span>; <span class="comment">// softmax方法</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">predict</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt;&amp;, <span class="keyword">int32_t</span>, real,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::pair&lt;real, <span class="keyword">int32_t</span>&gt;&gt;&amp;,</span></span></span><br><span class="line"><span class="function"><span class="params">                 Vector&amp;, Vector&amp;)</span> <span class="keyword">const</span></span>; <span class="comment">// predict方法</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">predict</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt;&amp;, <span class="keyword">int32_t</span>, real,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::pair&lt;real, <span class="keyword">int32_t</span>&gt;&gt;&amp;)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int32_t</span>, real, <span class="keyword">int32_t</span>, real,</span></span></span><br><span class="line"><span class="function"><span class="params">             <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::pair&lt;real, <span class="keyword">int32_t</span>&gt;&gt;&amp;,</span></span></span><br><span class="line"><span class="function"><span class="params">             Vector&amp;)</span> <span class="keyword">const</span></span>; <span class="comment">// 深度优先遍历方法</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">findKBest</span><span class="params">(<span class="keyword">int32_t</span>, real, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::pair&lt;real, <span class="keyword">int32_t</span>&gt;&gt;&amp;,</span></span></span><br><span class="line"><span class="function"><span class="params">                   Vector&amp;, Vector&amp;)</span> <span class="keyword">const</span></span>; <span class="comment">// 选出k个最近的</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt;&amp;, <span class="keyword">int32_t</span>, real)</span></span>; <span class="comment">//计算梯度，更新权值</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">computeHidden</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt;&amp;, Vector&amp;)</span> <span class="keyword">const</span></span>; <span class="comment">//计算hidden的值</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">computeOutputSoftmax</span><span class="params">(Vector&amp;, Vector&amp;)</span> <span class="keyword">const</span></span>;<span class="comment">//计算经过softmax后的值</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">computeOutputSoftmax</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setTargetCounts</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int64_t</span>&gt;&amp;)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initTableNegatives</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int64_t</span>&gt;&amp;)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">buildTree</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int64_t</span>&gt;&amp;)</span></span>;<span class="comment">// 建立哈夫曼树</span></span><br><span class="line">    <span class="function">real <span class="title">getLoss</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function">real <span class="title">sigmoid</span><span class="params">(real)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function">real <span class="title">log</span><span class="params">(real)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function">real <span class="title">std_log</span><span class="params">(real)</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::minstd_rand rng;</span><br><span class="line">    <span class="keyword">bool</span> quant_;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setQuantizePointer</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;QMatrix&gt;, <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;QMatrix&gt;, <span class="keyword">bool</span>)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>trainThread 分析完Model的结构,转回trainThread，这个threadId主要是为了给各个线程分配不同的数据。<br>然后有三个模型,分别是<strong>supervised</strong>，<strong>skipgram</strong>和<strong>cbow</strong>,这里选择一个模型<strong>supervised</strong>继续下面的分析。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> FastText::supervised(</span><br><span class="line">    Model&amp; model,</span><br><span class="line">    real lr,</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt;&amp; line,</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int32_t</span>&gt;&amp; labels) &#123;</span><br><span class="line">    <span class="keyword">if</span> (labels.size() == <span class="number">0</span> || line.size() == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="built_in">std</span>::uniform_int_distribution&lt;&gt; uniform(<span class="number">0</span>, labels.size() - <span class="number">1</span>); <span class="comment">// 均匀分布</span></span><br><span class="line">    <span class="keyword">int32_t</span> i = uniform(model.rng);</span><br><span class="line">    model.update(line, labels[i], lr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://github.com/facebookresearch/fastText/tree/master/src" target="_blank" rel="noopener">https://github.com/facebookresearch/fastText/tree/master/src</a></li>
+<li><a href="https://stackoverflow.com/questions/3911536/utf-8-unicode-whats-with-0xc0-and-0x80" target="_blank" rel="noopener">https://stackoverflow.com/questions/3911536/utf-8-unicode-whats-with-0xc0-and-0x80</a></li>
+<li><a href="http://blog.sina.com.cn/s/blog\_7c4f3b160101dv4p.html" target="_blank" rel="noopener">http://blog.sina.com.cn/s/blog\_7c4f3b160101dv4p.html</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>jcyan</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://pickou.cn/post/28086dee.html" title="fasttext source code reading">http://pickou.cn/post/28086dee.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/c/" rel="tag"># c++</a>
+          
+            <a href="/tags/fasttext/" rel="tag"># fasttext</a>
+          
+            <a href="/tags/tool/" rel="tag"># tool</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/400a901a.html" rel="next" title="DianNao Accelerator">
+                <i class="fa fa-chevron-left"></i> DianNao Accelerator
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/4a17b156.html" rel="prev" title="Hello World">
+                Hello World <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/jcyan.jpg" alt="jcyan">
+            
+              <p class="site-author-name" itemprop="name">jcyan</p>
+              <p class="site-description motion-element" itemprop="description">All things I interest in!</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/pickou" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="472179216@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#project-architecture"><span class="nav-number">1.</span> <span class="nav-text">project architecture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#train"><span class="nav-number">2.</span> <span class="nav-text">train</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Args"><span class="nav-number">3.</span> <span class="nav-text">Args</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fasttext"><span class="nav-number">4.</span> <span class="nav-text">fasttext</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jcyan</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/reading_progress/reading_progress.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: true,
+        appId: 'spB2fwLnxzEUqwROVbbvT9wo-gzGzoHsz',
+        appKey: 'MQBDqb0R0gX7dTJbvcpX6afm',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        meta:guest,
+        pageSize:'10' || 10,
+        visitor: false
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
