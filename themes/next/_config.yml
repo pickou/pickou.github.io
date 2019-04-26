@@ -165,8 +165,8 @@ social:
   #Instagram: https://instagram.com/yourname || instagram
   #Skype: skype:yourname?call|chat || skype
   #微信: https://github.com/yanchangyou/blog.321zou.com/blob/master/images/wechat.jpg?raw=true
-  zhihu: '//www.zhihu.com/people/jackyan-55/activities'
-  linkedin: '//www.linkedin.com/in/%E4%BF%8A%E8%B6%85-%E9%A2%9C-524914144/'
+  #zhihu: '//www.zhihu.com/people/jackyan-55/activities'
+  #linkedin: '//www.linkedin.com/in/%E4%BF%8A%E8%B6%85-%E9%A2%9C-524914144/'
 
 social_icons:
   enable: true
@@ -200,7 +200,7 @@ avatar:
   # If true, the avatar would be dispalyed in circle.
   rounded: true
   # The value of opacity should be choose from 0 to 1 to set the opacity of the avatar.
-  opacity: 1
+  opacity: 0.8
   # If true, the avatar would be rotated with the cursor.
   rotated: false
 
